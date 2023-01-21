@@ -8,31 +8,104 @@ pt.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 file = 'assets/schedule_1.png'
 img = np.array(Image.open(file))
 
-div = 5
+def show_img(image):
+    cv2.imshow('image', image)
+    cv2.waitKey()
+
+def get_filtered_image(image):
+    norm_img = np.zeros((image.shape[0], image.shape[1]))
+    image = cv2.normalize(image, norm_img, 0, 255, cv2.NORM_MINMAX)
+    image = cv2.threshold(image, 100, 255, cv2.THRESH_BINARY)[1]
+    image = cv2.GaussianBlur(image, (1, 1), 0)
+
+    return image
+
+def resized(image, percent):
+    wid = int(image.shape[1] * percent / 100)
+    hei = int(image.shape[0] * percent / 100)
+
+    return cv2.resize(image, (wid, hei))
+
+def box_detect(img):
+
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+
+    thresh_inv = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)[1]
+
+    # Blur the image
+    blur = cv2.GaussianBlur(thresh_inv,(1,1),0)
+
+    thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)[1]
+
+    # find contours
+    contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+
+    mask = np.ones(img.shape[:2], dtype="uint8") * 255
+    for c in contours:
+        # get the bounding rect
+        x, y, w, h = cv2.boundingRect(c)
+        if w*h>1000:
+            cv2.rectangle(mask, (x, y), (x+w, y+h), (0, 0, 255), -1)
+
+    res_final = cv2.bitwise_and(img, img, mask=cv2.bitwise_not(mask))
+
+    cv2.imshow("boxes", mask)
+    cv2.imshow("final image", res_final)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+def vertical_lines(image):
+    img = cv2.cvtColor(image)
+    img_thr = cv2.threshold(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 128, 255, cv2.THRESH_BINARY_INV)[1]
+
+    thr_y = 200
+    y_sum = np.count_nonzero(img_thr)
+
+text = ""
+
+divi = 5
 
 shape = list(np.shape(img))
-X = shape[0] // div
-Y = shape[1] // div
+X = shape[0] // divi
+Y = shape[1] // divi
 x_val = 0
-y_val = 0
+di = 0
 
-for d in range div:
-    norm_img = np.zeros((img.shape[0], img.shape[1]))
-    img_i = cv2.normalize(img, norm_img, 0, 255, cv2.NORM_MINMAX)
-    img_i = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY)[1]
-    img_i = cv2.GaussianBlur(img, (1, 1), 0)
+x_lim = X
+
+# for d in range(0, divi):
+    # x_val = 0
+
+
+filtered = get_filtered_image(img)
+filtered = resized(filtered, 60)
+show_img(filtered)
+# box_detect(filtered)
+vertical_lines(filtered)
+
+"""
+while x_lim < shape[0]:
+    sub_img = img[x_val : x_lim, :]
+
+    sub_img = get_filtered_img(sub_img)
+    show_img(sub_img)
+
+    text += pt.image_to_string(sub_img)
+
+    x_val += X // 10
+    x_lim += X // 10
     
+"""
 
 
 
 
 # print(np.shape(img))
 
-print(img[100, 100])
-
 # cv2.imshow('1', img)
 
-print(pt.image_to_string(img))
+text = pt.image_to_string(filtered)
+print(text)
 
 # cv2.waitKey()
 
