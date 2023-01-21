@@ -5,7 +5,7 @@ import numpy as np
 
 pt.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
-file = 'assets/schedule_1.png'
+file = '../assets/schedule_1.png'
 img = np.array(Image.open(file))
 
 def show_img(image):
@@ -55,11 +55,20 @@ def box_detect(img):
     cv2.destroyAllWindows()
 
 def vertical_lines(image):
-    img = cv2.cvtColor(image)
+    img = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     img_thr = cv2.threshold(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 128, 255, cv2.THRESH_BINARY_INV)[1]
 
-    thr_y = 200
-    y_sum = np.count_nonzero(img_thr)
+    thr_y = 50
+    y_sum = np.count_nonzero(img_thr, axis=0)
+    peaks = np.where(y_sum > thr_y)[0]
+
+    thr_x = 100
+    temp = np.diff(peaks).squeeze()
+    idx = np.where(temp > thr_x)[0]
+    peaks = np.concatenate(([0], peaks[idx+1]), axis=0) + 1
+
+    for i in np.arange(peaks.shape[0] - 1):
+        cv2.imwrite('../assets/output/sub_image_' + str(i) + '.png', img[:, peaks[i]:peaks[i+1]])
 
 text = ""
 
@@ -79,7 +88,7 @@ x_lim = X
 
 filtered = get_filtered_image(img)
 filtered = resized(filtered, 60)
-show_img(filtered)
+# show_img(filtered)
 # box_detect(filtered)
 vertical_lines(filtered)
 
@@ -98,13 +107,11 @@ while x_lim < shape[0]:
 """
 
 
-
-
 # print(np.shape(img))
 
 # cv2.imshow('1', img)
 
-text = pt.image_to_string(filtered)
+text = pt.image_to_string(get_filtered_image(cv2.imread('../assets/sub_image_0.png')))
 print(text)
 
 # cv2.waitKey()
