@@ -1,0 +1,1 @@
+{"@odata.context": "http://api.purdue.io/odata/$metadata#Courses(Classes(Sections(Meetings())))", "value": []}
