@@ -3,6 +3,7 @@ from flask import Flask, render_template, url_for
 from flask_bootstrap import Bootstrap
 from werkzeug.utils import redirect
 from webApp.students import Students
+from readScheduleImage import getDataFromImg
 from os import environ
 import uuid
 
@@ -20,9 +21,18 @@ students = Students()
 
 @app.route("/")
 def index():
-
-    pass
-
+    return render_template("upload.html")
+@app.route("/uploadImg", methods=["POST"])
+def getImg():
+    if flask.request.method == "POST":
+        img = flask.request.files['file']
+        img.save('uploadedImages/schedule.png')
+        student = getDataFromImg("schedule.png")
+        print(student)
+        students.add_student(student)
+        return redirect(url_for(DEFAULT_ROUTE_PLAYER))
+    else:
+        return redirect(url_for(DEFAULT_ROUTE_PLAYER))
 @app.route("/student", methods=["GET", "POST"])
 def player():
     if flask.request.method == "POST":
