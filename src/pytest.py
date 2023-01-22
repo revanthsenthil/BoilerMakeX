@@ -2,11 +2,21 @@ import pytesseract as pt
 import cv2
 from PIL import Image
 import numpy as np
+import re
 
 pt.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
 file = '../assets/schedule_1.png'
 img = np.array(Image.open(file))
+
+all_courses = []
+
+names_dict = {
+    "names"   : ["Revanth", "Visuwanaath", "Archis"],
+    "images"  : ["schedule_1", "schedule_6", "schedule_7"],
+    "courses" : [],
+    "times"   : []
+}
 
 def show_img(image):
     cv2.imshow('image', image)
@@ -69,6 +79,40 @@ def vertical_lines(image):
 
     for i in np.arange(peaks.shape[0] - 1):
         cv2.imwrite('../assets/output/sub_image_' + str(i) + '.png', img[:, peaks[i]:peaks[i+1]])
+    
+    return (i + 1)
+
+
+def extract_info(text):
+    # Initialize lists to store extracted information
+    courses = []
+    unique_ids = []
+    class_times = []
+    # locations = []
+    
+    # Use regex to find course information
+    course_pattern = r'[A-Z]{2,4} \d{5}-\d{3}'
+    course_matches = re.finditer(course_pattern, text)
+    for match in course_matches:
+        courses.append(match.group())
+        
+    # Use regex to find unique ID information
+    unique_id_pattern = r'\d{5} Class'
+    unique_id_matches = re.finditer(unique_id_pattern, text)
+    for match in unique_id_matches:
+        unique_ids.append(match.group())
+        
+    # Use regex to find class time and location information
+    class_time_pattern = r'\d{,2}[:\-;]*\d{,2} *[ap]m-\d{1,2}:\d{2} [ap]m'
+    # location_pattern = r'[A-Z]{1,5} \d{1,4}'
+    class_time_matches = re.finditer(class_time_pattern, text)
+    # location_matches = re.finditer(location_pattern, text)
+    for class_time in class_time_matches:
+        class_times.append(class_time.group())
+        # locations.append(location.group())
+        
+    return courses, unique_ids, class_times
+
 
 text = ""
 
@@ -87,10 +131,20 @@ x_lim = X
 
 
 filtered = get_filtered_image(img)
-filtered = resized(filtered, 60)
+filtered = resized(filtered, 70)
 # show_img(filtered)
 # box_detect(filtered)
-vertical_lines(filtered)
+total = vertical_lines(filtered)
+
+
+text_outs = []
+
+for out in range(total):
+    text = pt.image_to_string(get_filtered_image(cv2.imread(f'../assets/sub_image_{out}.png')))
+
+    text_outs.append(extract_info(text))
+
+print(text_outs)
 
 """
 while x_lim < shape[0]:
@@ -111,8 +165,6 @@ while x_lim < shape[0]:
 
 # cv2.imshow('1', img)
 
-text = pt.image_to_string(get_filtered_image(cv2.imread('../assets/sub_image_0.png')))
-print(text)
 
 # cv2.waitKey()
 
