@@ -30,16 +30,11 @@ def player():
         email = flask.request.values.get("email")
         if not students.get_student_email(email):
             return redirect(url_for(DEFAULT_ROUTE_PLAYER))
+        classnum_to_change = flask.request.values.get("classnum")
         for clas in students.get_student_email(email)['classes']:
-            if clas['classnum'] == flask.request.values.get("classnum"):
-                clas['preference'] = flask.request.values.get("preference")
-
-        avatar = flask.request.values.get("avatar")
-        playername = flask.request.values.get("playername")
-        points = flask.request.values.get("points")
-        students.add_score(
-            {"id" : id, "avatar" : avatar, "playername" : playername, "points":points}
-        )
+            if clas['classnum'] == classnum_to_change:
+                preference = flask.request.values.get("Want Study Buddy?")
+        
 
         return redirect(url_for(DEFAULT_ROUTE_LEADERBOARD))
     else:

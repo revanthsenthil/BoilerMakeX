@@ -29,7 +29,7 @@ class Students:
     def get_student_email(self, student):
         with open('app.json', 'r+') as f:
             data = json.load(f)
-            arrayData = data['scores']
+            arrayData = data['students']
             
             for stud in arrayData:
                 # identify student match by email, if not found return False
