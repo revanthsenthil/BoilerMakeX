@@ -4,8 +4,8 @@
 		<title>Upload Schedule</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="{{url_for('static',filename='assets/css/main.css')}}" />
+		<noscript><link rel="stylesheet" href="{{url_for('static',filename='assets/css/noscript.css')}}" /></noscript>
 	</head>
 	<body class="is-preload">
 		<!-- Header -->
@@ -26,11 +26,12 @@
 							<h1 class="major">Upload your schedule</h1>
 							<!-- <span class="image fit"><img src="images/pic04.jpg" alt="" /></span> -->
 							<p>Please find your mypurdue weekly black and white schedule and upload here. Or click skip to manually enter your data.</p>
-							<form action="/action_page.php">
-								<input type="file" id="myFile" name="filename">
-								<a href="#" class="button large" >Submit</a>
+							<form action="/uploadImg" method="POST" enctype = "multipart/form-data">
+								<input type="file" id="myFile" name="file">
+								<input type = "submit">
 							</form>
 							<a href="#" class="button large" >Skip</a>
+							
 						</div>
 					</section>
 

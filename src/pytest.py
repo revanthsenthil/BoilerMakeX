@@ -7,7 +7,7 @@ import json
 
 pt.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
-file = '../assets/schedule_1.png'
+file = '../assets/schedule_6.png'
 img = np.array(Image.open(file))
 
 all_courses = []

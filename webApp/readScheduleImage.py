@@ -5,7 +5,7 @@ import numpy as np
 import re
 def getDataFromImg(fileName):
     pt.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
-    file = '../uploadedImages/' + fileName
+    file = 'uploadedImages/' + fileName
     img = np.array(Image.open(file))
 
     all_courses = []
