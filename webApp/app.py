@@ -4,7 +4,8 @@ from flask_bootstrap import Bootstrap
 from werkzeug.utils import redirect
 from leaderboard import Leaderboard
 from os import environ
-from models import Score 
+import uuid
+
 
 DEFAULT_ROUTE_LEADERBOARD = "index"
 DEFAULT_ROUTE_PLAYER = "player"
@@ -12,8 +13,10 @@ DEFAULT_ROUTE_PLAYER = "player"
 app = Flask(__name__)
 Bootstrap(app)
 
-conn_string = environ.get("DB_URI")
-leaderboard = Leaderboard(conn_string)
+file = 'data.json'
+
+# conn_string = environ.get("DB_URI")
+leaderboard = Leaderboard()
 
 @app.route("/")
 def index():
@@ -25,18 +28,18 @@ def index():
 @app.route("/player", methods=["GET", "POST"])
 def player():
     if flask.request.method == "POST":
-        id = flask.request.values.get("id")
+        id = str(uuid.uuid4())
         avatar = flask.request.values.get("avatar")
         playername = flask.request.values.get("playername")
         points = flask.request.values.get("points")
         leaderboard.add_score(
-            Score(id=id, avatar=avatar, playername=playername, points=points)
+            {"id" : id, "avatar" : avatar, "playername" : playername, "points":points}
         )
 
         return redirect(url_for(DEFAULT_ROUTE_LEADERBOARD))
     else:
         avatars = leaderboard.get_avatar_dic()
-        score = Score(avatar="0", playername="", points=0)
+        score = leaderboard.get_scores()
         return render_template("player.html", score = score, avatars = avatars)
 
 #foqzEAYMR44iodg_2Nuu0w

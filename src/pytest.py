@@ -3,6 +3,7 @@ import cv2
 from PIL import Image
 import numpy as np
 import re
+import json
 
 pt.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
@@ -144,7 +145,10 @@ for out in range(total):
 
     text_outs.append(extract_info(text))
 
-print(text_outs)
+# print(text_outs)
+with open('app.json', 'w') as f:
+    json.dump(text_outs,f)
+
 
 """
 while x_lim < shape[0]:

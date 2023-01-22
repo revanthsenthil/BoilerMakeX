@@ -1,23 +1,35 @@
-from cockroachdb.sqlalchemy import run_transaction
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from transactions import get_scores_txn, add_score_txn
+import json
+
 
 class Leaderboard:
-    def __init__(self, conn_string):
-        self.engine = create_engine(conn_string, convert_unicode=True)
-        self.sessionmaker = sessionmaker(bind=self.engine)
+    def __init__(self):
+        # self.engine = create_engine(conn_string, convert_unicode=True)
+        # self.sessionmaker = sessionmaker(bind=self.engine)
+        # initialize json file reading
+        # with open(file) as f:
+        #     self.data = json.load(f)
+        pass
+
 
     def get_scores(self):
-        return run_transaction(self.sessionmaker,
-                               lambda session: self.prepare_scores(session))
+        # return json scores data from json file
+        with open('data.json', 'r+') as f:
+            self.data = json.load(f)
+            return self.data['scores']
 
     def add_score(self, score):
-        return run_transaction(self.sessionmaker,
-                               lambda session: add_score_txn(session, score.avatar, score.playername, score.points))
+        with open('data.json', 'r+') as f:
+            data = json.load(f)
+            arrayData = data['scores']
+            arrayData.append(score)
+            print(arrayData)
+        
+        with open('data.json', 'w') as f:
+            json.dump({"scores":arrayData}, f)
 
+        
     def prepare_scores(self, session):
-        scores = get_scores_txn(session)
+        scores = self.get_scores(session)
         scores.sort(reverse=True, key=lambda e: e.points)
 
         result = list(map(lambda score, i: {'id': score.id,
