@@ -12,12 +12,9 @@ img = np.array(Image.open(file))
 
 all_courses = []
 
-names_dict = {
-    "names"   : ["Revanth", "Visuwanaath", "Archis"],
-    "images"  : ["schedule_1", "schedule_6", "schedule_7"],
-    "courses" : [],
-    "times"   : []
-}
+fname = "Revanth"
+lname = "Senthil"
+email = "senthilr@purdue.edu"
 
 def show_img(image):
     cv2.imshow('image', image)
@@ -112,7 +109,8 @@ def extract_info(text):
         class_times.append(class_time.group())
         # locations.append(location.group())
         
-    return courses, unique_ids, class_times
+    # return courses, unique_ids, class_times
+    return unique_ids
 
 
 text = ""
@@ -138,16 +136,32 @@ filtered = resized(filtered, 70)
 total = vertical_lines(filtered)
 
 
-text_outs = []
+# text_outs = []
+uniq = []
 
 for out in range(total):
     text = pt.image_to_string(get_filtered_image(cv2.imread(f'../assets/sub_image_{out}.png')))
 
-    text_outs.append(extract_info(text))
+    # text_outs.append(extract_info(text))
+    for val in extract_info(text):
+        if val not in uniq:
+            uniq.append(val)
+
+student =   {
+    'fname' : fname, 'lname' : lname, 
+    'email' : email, 
+    'classes' : [{'classnum' : x.split()[0], 'needBuddy' : 'False'} for x in uniq]
+            }
 
 # print(text_outs)
+with open('app.json', 'r+') as f:
+    data = json.load(f)
+    arrayData = data['students']
+    arrayData.append(student)
+    print(arrayData)
+
 with open('app.json', 'w') as f:
-    json.dump(text_outs,f)
+    json.dump({"students":arrayData}, f)
 
 
 """
