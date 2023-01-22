@@ -1,1 +1,77 @@
-{"scores": [{"id": "00000000-0000-0000-0000-000000000000", "avatar": 1, "playername": "player1", "points": 100}, {"id": "00000000-0000-0000-0000-000000000001", "avatar": 2, "playername": "player2", "points": 200}, {"id": "00000000-0000-0000-0000-000000000002", "avatar": 3, "playername": "player3", "points": 300}, {"id": "00000000-0000-0000-0000-000000000003", "avatar": 4, "playername": "player4", "points": 400}, {"id": "00000000-0000-0000-0000-000000000004", "avatar": 5, "playername": "player5", "points": 500}, {"id": "", "avatar": "1", "playername": "asd", "points": "12"}, {"id": "", "avatar": "3", "playername": "sad", "points": "23423"}, {"id": "c49a87ed-0c25-4db8-b443-b1e94315e706", "avatar": "1", "playername": "twst", "points": "4"}]}
+{
+  "students": [
+    {
+      "fname": "John",
+      "lname": "Doe",
+      "email": "johndoe@purdue.edu",
+      "classes": [
+        {
+          "classnum": "12345",
+          "needBuddy": "False"
+        },
+        {
+          "classnum": "23456",
+          "needBuddy": "False"
+        },
+        {
+          "classnum": "34567",
+          "needBuddy": "False"
+        }
+      ]
+    },
+    {
+      "fname": "Jane",
+      "lname": "Doe",
+      "email": "janedoe@purdue.edu",
+      "classes": [
+        {
+          "classnum": "12345",
+          "needBuddy": "False"
+        },
+        {
+          "classnum": "23456",
+          "needBuddy": "False"
+        },
+        {
+          "classnum": "34567",
+          "needBuddy": "False"
+        }
+      ]
+    },
+    {
+      "fname": "Revanth",
+      "lname": "Senthil",
+      "email": "senthilr@purdue.edu",
+      "classes": [
+        {
+          "classnum": "19651",
+          "needBuddy": "False"
+        },
+        {
+          "classnum": "17186",
+          "needBuddy": "False"
+        },
+        {
+          "classnum": "12558",
+          "needBuddy": "False"
+        },
+        {
+          "classnum": "22449",
+          "needBuddy": "False"
+        },
+        {
+          "classnum": "54827",
+          "needBuddy": "False"
+        },
+        {
+          "classnum": "23074",
+          "needBuddy": "False"
+        },
+        {
+          "classnum": "29812",
+          "needBuddy": "False"
+        }
+      ]
+    }
+  ]
+}
