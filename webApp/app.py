@@ -21,7 +21,7 @@ students = Students()
 
 @app.route("/")
 def index():
-    return render_template("logIn.html")
+    return render_template("index.html")
 @app.route("/upload.html")
 def upload1sadas():
     return render_template("upload.html")

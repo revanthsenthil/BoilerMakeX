@@ -1,44 +1,54 @@
-{%- extends "base.html" %}
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Partner Up!</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{url_for('static',filename='assets/css/main.css')}}" />
+		<noscript><link rel="stylesheet" href="{{url_for('static',filename='assets/css/noscript.css')}}" /></noscript>
+	</head>
+	<body class="is-preload">
 
+		<!-- Sidebar -->
+			<section id="sidebar">
+				<div class="inner">
+					<nav>
+						<ul>
+							<li><a href="#intro">Welcome</a></li>
+						</ul>
+					</nav>
+				</div>
+			</section>
 
-{% import "bootstrap/utils.html" as utils %}
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<!-- Intro -->
+					<section id="intro" class="wrapper style1 fullscreen fade-up">
+						<div class="inner">
+							<h1>Partner Up!</h1>
+							<p>Welcome to Partner Up!, a website designed to help students find study buddies in their classes. With Partner Up, students can submit their schedules via screenshots or manually entering, and then search for other students who are also looking for study buddies in the same classes.
+							</p>
+							<ul class="actions">
+								<li><a href="logIn.html" class="button scrolly">Create an account</a></li>
+							</ul>
+						</div>
+					</section>
 
+				
+			</div>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
 
-{% block content %}
-
-
-<div class="row mt-4">
-  <div class="col col-md-6 offset-md-3 alert alert-primary bg-danger text-white text-center">
-    <span class="h1">STUDENTS</span>
-  </div>
-</div>
-
-
-
-<div class="row">
-  <div class="col col-md-6 offset-md-3">
-    <div class="row alert alert-warning bg-dark text-white">
-        <!-- <span class="col col-1 mt-0 h1 text-center">#</span> -->
-        <span class="col col-7 mt-0 h1 border-left border-light">First Name</span>
-        <span class="col col-4 mt-0 h1 border-left border-light text-right">Last Name</span>
-      </div>
-      {% for student in students %}
-      <div class="row alert alert-warning">
-        <input type="hidden" value={{ student.email }}></input>
-        <!-- <span class="col col-1 mt-0 h1 text-center">{{ student.class }}</span> -->
-        <span class="col col-7 mt-0 border-left border-dark h1 text-truncate">{{ score.avatar }}&nbsp;{{ score.fname }}</span>
-        <span class="col col-4 mt-0 border-left border-dark h1 text-right">{{ score.lname }}</span>
-    </div>
-    {% endfor %}
-  </div>
-</div>
-
-
-
-<div class="row">
-  <div class="col col-md-3 offset-md-6">
-    <input type="button" class="h1 mt-0 float-right text-center"
-    value="+ Add New Entry" onclick="location.href='/student'"/>
-  </div>
-</div>
-{%- endblock %}
+	</body>
+</html>
