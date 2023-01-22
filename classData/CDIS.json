@@ -1,0 +1,1 @@
+{"@odata.context": "http://api.purdue.io/odata/$metadata#Courses(Classes(Sections(Meetings())))", "value": [{"Id": "caa0bf7d-eeb8-4181-9e08-0aaa1229e066", "Number": "23900", "SubjectId": "a2f316af-2747-4062-9bbf-e4898dc45b22", "Title": "Introduction To Disability Studies", "CreditHours": 3.0, "Description": "", "Classes": []}]}
